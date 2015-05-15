@@ -1,0 +1,59 @@
+@import url(../assets/segoeui.ttf);
+* {
+    font-family: Segoe UI;
+    text-decoration: none;
+}
+
+.barraSup {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 10%;
+    background-color: black;
+    color: white;
+    font-family: arial;
+}
+
+.right {
+    position: absolute;
+    right: 0px;
+}
+
+.left {
+    position: absolute;
+    left: 0px;
+}
+
+.center {
+    position: relative;
+    right: auto;
+    left: auto;
+}
+
+.barraSupText {
+    font-size: 17px;
+    display: inline-block;
+    margin-top: 20%;
+    margin-right: 20px;
+    color: white;
+}
+
+.bigFont {
+    font-size: 35px;
+}
+
+.barraInf {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 10%;
+    left: 0;
+    width: 100%;
+    height: 90%;
+    background-color: white;
+    color: black;
+    font-family: arial;
+}
