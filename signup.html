@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="barraInf">
-        <form>
+        <form onsubmit="return registre()">
             <p>Nom d'usuari:</p>
             <input type="text" id="username" required>
             <p>Correu Electr&ograve;nic: </p>
@@ -25,7 +25,7 @@
             <p>Torna a introduir la contrasenya:</p>
             <input type="password" id="pass2" required>
             <p>
-                <button onclick="registre()">Registra't</button>
+                <input type="submit" value="Registra't">
             </p>
         </form>
     </div>
