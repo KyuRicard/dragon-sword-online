@@ -15,15 +15,15 @@
         </div>
     </div>
     <div class="barraInf">
-        <form onsubmit="return registre()" method="post" action="SignUp">
+        <form onsubmit="registre()">
             <p>Nom d'usuari:</p>
             <input type="text" id="username" required>
             <p>Correu Electr&ograve;nic: </p>
             <input type="email" id="mail" required>
             <p>Contrasenya: </p>
-            <input type="password" id="pass1" required>
+            <input type="password" id="pass1" pattern=".{6,}" required>
             <p>Torna a introduir la contrasenya:</p>
-            <input type="password" id="pass2" required>
+            <input type="password" id="pass2" pattern=".{6,}" required>
             <p>
                 <input type="submit" value="Registra't">
             </p>
