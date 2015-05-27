@@ -1,0 +1,4 @@
+Iniciant Servidor de Dragon Sword Online
+Wed, 27 May 2015 20:26:47 GMT
+Escoltant al port 8080
+http://:::8080
