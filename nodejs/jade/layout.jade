@@ -1,0 +1,17 @@
+doctype
+html
+    head
+        title Dragon Sword Online
+        link(href="/css/style.css" type="text/css" rel="stylesheet")
+        script(src="/js/scripts.js")
+    body
+        div(class="barraSup")
+            div(class="right")
+                if user != null
+                    p.barraSupText Hola #{user}
+                else
+                    a href="/LogIn" class="barraSupText"Login
+                    a href="/SignUp" class="barraSupText"Sign Up
+
+        .barraInf
+            a(href="/Game"): h1 Jugar al Dragon Sword Online
