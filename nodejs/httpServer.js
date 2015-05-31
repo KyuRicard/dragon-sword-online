@@ -52,17 +52,18 @@ exports.HttpServer = function() {
 
             //Consulta si l'usuari ja existeix
             var query = 'SELECT Username FROM user WHERE Username = ?';
-
+            
             this.check = 
             connection.query(query, [username], function(err, rows, fields) {
-                return check = userChecker(username, rows[0].Username);               
-            });            
+                console.log(rows);
+                return rows == null;             
+            });           
             
             //Si no existeix, el crea
-            if (!check) {
+            if (check) {
                 var insert = 'INSERT INTO user VALUES (?, ?, ?)';
-            connection.query(insert, [username, email, password], function(err, rows) {                
-                console.log('%s result, %s errors', rows, err);                  
+                connection.query(insert, [username, password, email], function(err, rows) {                
+                    
                 }); 
             } else {           
                 res.send("<script>alert('Usuari ja existent. Utilitza un usuari diferent.')</script><meta http-equiv='refresh' content='0;url=/SignUp' />");
@@ -84,7 +85,7 @@ exports.HttpServer = function() {
         if (logged) {
             res.render('index', {user: usr});   
         } else {
-            res.send("<script>alert('Usuari o contrasenya incorrectes.')</script><meta http-equiv='refresh' content='0;url=/SignUp' />");
+            res.send("<script>alert('Usuari o contrasenya incorrectes.')</script><meta http-equiv='refresh' content='0;url=/LogIn' />");
             res.end();      
         }
     });
@@ -95,9 +96,25 @@ exports.HttpServer = function() {
     });
     
     var LogIn = function(user, pass) {
+        connection = mySql.createPool({
+                connectionLimit: 5,
+                host: 'localhost',
+                user: 'root',
+                password: '',
+                database: 'dso'
+        });
         
+        var query = 'SELECT Username FROM user WHERE Username = ? AND Password = ?';
+        console.log(query);
         
-        return true;
+        this.check = connection.query(query, [user, pass]);
+        
+        console.log('Usuari: %s Check: %s', user, check[0].Username);
+        if (user == check.Username) {
+            return true;   
+        } else {
+            return false;   
+        }
     };
     
     var passChecker = function(pass1, pass2) {
