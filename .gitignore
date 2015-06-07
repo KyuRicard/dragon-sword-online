@@ -1,3 +1,4 @@
 *.db
 *.txt
 nodejs/logs/Thu May 28 2015.txt
+js/phaser

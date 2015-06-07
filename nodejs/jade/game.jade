@@ -1,6 +1,12 @@
-extend layout
+extends layout
 
-script(src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.3.0/phaser.js")       
-script(src="/js/game/view/boardView.js")
-script(src="/js/game/controls/player.js")        
-script(src="/js/bootstrap.js")
+block scripts
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.3.0/phaser.js")       
+    script(src="/js/game/view/boardView.js")
+    script(src="/js/game/controls/control.js")
+    script(src="/js/game/objects/player.js")
+    script(src="/js/game/loader/image.js")
+    script(src="/js/bootstrap.js")
+    
+block inferior
+    div(id="game")

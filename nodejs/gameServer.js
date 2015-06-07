@@ -10,7 +10,6 @@ exports.Server = function() {
             host = servidor.address().address;
             port = servidor.address().port;        
             console.log('http://%s:%s', host, port);
-            log.write('http://' + host + ':' + port + '\n');
     }); 
     
     io = socketIO.listen(servidor);
@@ -18,7 +17,7 @@ exports.Server = function() {
     log.write('Escoltant al port ' + servidor.address().port + '\n');
     io.on('connection', function(socket) {
         console.log('IP %s Connected.', socket.address().ip);
-        log.write('IP ' + socket.address().ip + ' connected.\n');
+		//execute(funcion, parametres[]);
         socket.on('disconnect', function() {
             console.log('IP %s Disconnected.', socket.address().ip);
             log.write('IP ' + socket.address().ip + ' Disconnected.\n');

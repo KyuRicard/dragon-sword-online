@@ -4,14 +4,17 @@ html
         title Dragon Sword Online
         link(href="/css/style.css" type="text/css" rel="stylesheet")
         script(src="/js/scripts.js")
+        block scripts
     body
         div(class="barraSup")
+            div(class="left")
+                a(href="/", class="barraSupText") Main Menu
             div(class="right")
                 if user != null
                     p.barraSupText Hola #{user}
+                    a(href="/LogOut", class="barraSupText") Desconnecta't
                 else
-                    a href="/LogIn" class="barraSupText"Login
-                    a href="/SignUp" class="barraSupText"Sign Up
-
-        .barraInf
-            a(href="/Game"): h1 Jugar al Dragon Sword Online
+                    a(href="/LogIn", class="barraSupText") Login
+                    a(href="/SignUp", class="barraSupText") Sign Up
+        div(class="barraInf")
+            block inferior
