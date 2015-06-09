@@ -1,5 +1,6 @@
 var bootFase = {
     preload: function () {
+        var nom = getCookie('user');
         console.log('Carregant Phaser...');
         player = new Player();
 
@@ -10,8 +11,10 @@ var bootFase = {
 
         socket = io('http://localhost:8080');
 
+        socket.emit('connect', nom);
+
         console.log('Carregant Usuari...');
-        var nom = getCookie('user');
+
 
         socket.emit('getPlayer', nom);
 

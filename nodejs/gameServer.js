@@ -1,6 +1,7 @@
 express = require('express');
+app = express();
 http = require('http');
-socketIO = require('socket.io')();
+socketIO = require('socket.io')(http.createServer(app));
 fs = require('fs');
 mySql = require('mysql');
 
@@ -13,7 +14,7 @@ exports.Server = function () {
         database: 'dso'
     });
 
-    app = express();
+
     servidor = http.createServer(app);
     servidor.listen(8080, function () {
         host = servidor.address().address;
@@ -34,6 +35,10 @@ exports.Server = function () {
             socket.username = username;
             users[username] = username;
             ++numPlayers;
+        });
+
+        socket.on('getPlayers', function () {
+            socket.emit('players', players);
         });
 
         socket.on('disconnect', function () {
@@ -61,10 +66,8 @@ exports.Server = function () {
                 setPlayerJson(rows[0]);
             });
             players[socket.username] = playerJson;
-            console.log('JSON: %s', playerJson);
             socket.emit('setPlayer', playerJson);
             io.sockets.emit('setPlayer', playerJson);
-            console.log('Enviat');
         });
     });
 

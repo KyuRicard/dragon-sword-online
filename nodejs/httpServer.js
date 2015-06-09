@@ -2,6 +2,7 @@ express = require('express');
 jade = require('jade');
 path = require('path');
 cookieParser = require('cookie-parser');
+io = require('socket.io')();
 
 //En aquest servidor farem servir MySQL com a Base de Dades
 mySql = require('mysql');
@@ -102,8 +103,19 @@ exports.HttpServer = function () {
         });
     });
 
+    httpLoader.get('/Admin', function (req, res) {
+        io = io('http://localhost:8080');
+        io.emit('getPlayers');
+        io.on('players', function (players) {
+            res.render('admin', {
+                playArr: players
+            });
+        });
+    });
+
     //GET de Game
     httpLoader.get('/Game', function (req, res) {
+
         res.render('game', {
             user: req.cookies.user
         });
