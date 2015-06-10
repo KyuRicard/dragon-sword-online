@@ -9,11 +9,7 @@ var bootFase = {
         game.load.spritesheet('player', '/media/img/player.png', 30, 32, 12);
         iLoad.carregaMapa(0);
 
-        if (nom == 'Kyuricard' || nom == 'Ezreal') {
-            socket = io('localhost:1234');
-        } else {
-            socket = io('62.83.210.94:1234');
-        }
+        socket = io('localhost:1234'); //Put server's IP here
 
         player.propietats.Name = nom;
 
