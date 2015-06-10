@@ -2,7 +2,6 @@ express = require('express');
 app = express();
 http = require('http');
 socketIO = require('socket.io')(http.createServer(app));
-fs = require('fs');
 mySql = require('mysql');
 
 exports.Server = function () {
@@ -24,7 +23,6 @@ exports.Server = function () {
 
     io = socketIO.listen(servidor);
     console.log('Escoltant al port %s', servidor.address().port);
-    log.write('Escoltant al port ' + servidor.address().port + '\n');
 
     var players = {};
     var exists = function (exist) {
