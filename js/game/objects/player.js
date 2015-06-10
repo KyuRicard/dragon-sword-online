@@ -59,6 +59,5 @@ var Player = function () {
         player.propietats.HP = propietats.HP;
         player.propietats.Map = propietats.Map;
         player.propietats.Level = propietats.Level;
-        player.propietats.Name = propietats.Name;
     };
 };

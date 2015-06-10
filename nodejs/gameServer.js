@@ -16,7 +16,7 @@ exports.Server = function () {
 
 
     servidor = http.createServer(app);
-    servidor.listen(8080, function () {
+    servidor.listen(1234, function () {
         host = servidor.address().address;
         port = servidor.address().port;
         console.log('http://%s:%s', host, port);
@@ -26,32 +26,60 @@ exports.Server = function () {
     console.log('Escoltant al port %s', servidor.address().port);
     log.write('Escoltant al port ' + servidor.address().port + '\n');
 
-    var users = {};
-    var numPlayers = 0;
     var players = {};
+    var exists = function (exist) {
+        return exist != undefined;
+    };
 
     io.on('connection', function (socket) {
-        socket.on('connect', function (username) {
+        socket.on('connecta', function (username) {
+            console.log('connect');
             socket.username = username;
-            users[username] = username;
-            ++numPlayers;
-        });
+            players[username] = {};
 
-        socket.on('getPlayers', function () {
-            socket.emit('players', players);
-        });
+            console.log(username + ' ' + socket.id);
 
-        socket.on('disconnect', function () {
-            delete users[socket.username];
-            --numPlayers;
-            var player = players[socket.username];
-            var query = 'UPDATE players SET X = ?, Y = ?, HP = ?, Exp = ?, Map = ?, Level = ? WHERE id LIKE ?';
-            connection.query(query, [player.X, player.Y, player.HP, player.Exp, player.Map, player.Level, player.Name], function (err, rows) {
+            var query = 'SELECT id FROM players WHERE id LIKE ?';
+            connection.query(query, [username], function (err, rows) {
                 if (err) {
-                    console.log(err);
+                    //console.log(err);
+                } else {
+                    exists(rows[0].id);
                 }
             });
 
+            if (!exists()) {
+                query = 'INSERT INTO players(`id`, `Imatge`, `X`, `Y`) VALUES(?, ?, ?, ?)';
+                connection.query(query, [username, 'player', 100, 100], function (err, rows) {
+                    if (err) {
+                        //console.log(err);
+                    }
+                });
+            }
+            socket.emit('waitOut', 'true');
+        });
+
+        socket.on('getPlayers', function () {
+            for (var i = 0; i < players.length; ++i) {
+                console.log('Emit: ' + i + ' %s', players[i])
+            }
+            socket.emit('players', players);
+
+        });
+
+        socket.on('disconnect', function () {
+            var player = players[socket.username];
+            if (player != undefined) {
+                var query = 'UPDATE players SET X = ?, Y = ?, HP = ?, Exp = ?, Map = ?, Level = ? WHERE id LIKE ?';
+                connection.query(query, [player.X, player.Y, player.HP, player.Exp, player.Map, player.Level, player.Name], function (err, rows) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            }
+
+            console.log('%s desconnectat.', socket.username);
+            io.sockets.emit('playerDisconnect', socket.username);
             delete players[socket.username];
         });
 
@@ -63,18 +91,27 @@ exports.Server = function () {
             console.log('Get Player %s', name);
             var query = 'SELECT id, X, Y, HP, Exp, Map, Level FROM players WHERE id LIKE ?';
             connection.query(query, [name], function (err, rows) {
-                setPlayerJson(rows[0]);
+                if (err) {
+                    console.log(err);
+                }
+                if (rows[0] != undefined) {
+                    console.log('id: %s, X: %s, Y: %s', rows[0].id, rows[0].X, rows[0].Y);
+                    setPlayerJson(rows[0], rows[0].id);
+                    socket.emit('setPlayer', players[socket.username]);
+                } else {
+                    console.log('Empty');
+                }
             });
-            players[socket.username] = playerJson;
-            socket.emit('setPlayer', playerJson);
-            io.sockets.emit('setPlayer', playerJson);
+            for (i in players) {
+                console.log('Name: %s, X: %s, Y: %s', i.Name, i.X, i.Y);
+            }
         });
     });
 
     var playerJson = {};
 
-    var setPlayerJson = function (propietats) {
-        playerJson = {
+    var setPlayerJson = function (propietats, id) {
+        players[id] = {
             Name: propietats.id,
             X: propietats.X,
             Y: propietats.Y,

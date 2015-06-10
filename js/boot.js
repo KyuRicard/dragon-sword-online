@@ -9,18 +9,24 @@ var bootFase = {
         game.load.spritesheet('player', '/media/img/player.png', 30, 32, 12);
         iLoad.carregaMapa(0);
 
-        socket = io('http://localhost:8080');
+        if (nom == 'Kyuricard' || nom == 'Ezreal') {
+            socket = io('localhost:1234');
+        } else {
+            socket = io('62.83.210.94:1234');
+        }
 
-        socket.emit('connect', nom);
+        player.propietats.Name = nom;
 
+        socket.emit('connecta', nom);
         console.log('Carregant Usuari...');
+        socket.on('waitOut', function (wait) {
+            socket.emit('getPlayer', nom);
+            socket.on('setPlayer', function (propietats) {
+                debugger;
+                player.createPlayer(propietats);
+                game.state.start('load');
+            });
 
-
-        socket.emit('getPlayer', nom);
-
-        socket.on('setPlayer', function (propietats) {
-            player.createPlayer(propietats);
-            game.state.start('load');
         });
 
     }

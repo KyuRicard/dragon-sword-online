@@ -60,7 +60,11 @@ exports.HttpServer = function () {
 
                 this.check =
                     connection.query(query, [username], function (err, rows, fields) {
-                        checkUser(rows[0].Username);
+                        if (err) {
+                            checkUser(false);
+                        } else {
+                            checkUser(rows[0].Username);
+                        }
                     });
 
                 //Si no existeix, el crea
@@ -70,6 +74,10 @@ exports.HttpServer = function () {
 
                     });
                     res.cookie('user', username);
+                    insert = 'INSERT INTO player VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                    connection.query(insert, [username, 100, 100, 0, 0, 0, 0, 0, 'player'], function (err, rows) {
+
+                    });
                 } else {
                     res.send("<script>alert('Usuari ja existent. Utilitza un usuari diferent.')</script><meta http-equiv='refresh' content='0;url=/SignUp' />");
                     res.end();
@@ -144,8 +152,12 @@ exports.HttpServer = function () {
         var query = 'SELECT Username FROM user WHERE Username LIKE ? AND Password LIKE ?';
 
         connection.query(query, [user, pass], function (err, rows, fields) {
-            check = rows[0].Username;
-            checkUser(check);
+            if (err) {
+                console.log(err);
+            } else {
+                check = rows[0].Username;
+                checkUser(check);
+            }
         });
 
         return checked != null;

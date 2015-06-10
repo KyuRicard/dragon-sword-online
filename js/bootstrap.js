@@ -5,3 +5,5 @@ game.state.add('load', loadFase);
 game.state.start('boot');
 
 var player = undefined;
+var jugadors = {};
+var frame = 0;
