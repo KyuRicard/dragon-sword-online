@@ -60,19 +60,19 @@ exports.HttpServer = function () {
 
                 this.check =
                     connection.query(query, [username], function (err, rows, fields) {
-                        if (err) {
+                        if (err || rows[0] == undefined) {
                             checkUser(false);
                         } else {
-                            checkUser(rows[0].Username);
+                            checkUser(true);
                         }
                     });
 
                 //Si no existeix, el crea
                 if (check) {
-                    var insert = 'INSERT INTO user VALUES (?, ?, ?)';
+                    /*var insert = 'INSERT INTO user VALUES (?, ?, ?)';
                     connection.query(insert, [username, password, email], function (err, rows) {
 
-                    });
+                    });*/
                     res.cookie('user', username);
                     insert = 'INSERT INTO player VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
                     connection.query(insert, [username, 100, 100, 0, 0, 0, 0, 0, 'player'], function (err, rows) {
@@ -131,7 +131,7 @@ exports.HttpServer = function () {
 
     httpLoader.get('/LogOut', function (req, res) {
         res.clearCookie('user');
-        res.redirect('back');
+        res.redirect('/');
     });
 
     var checked;

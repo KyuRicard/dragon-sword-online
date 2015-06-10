@@ -39,10 +39,10 @@ exports.Server = function () {
 
             var query = 'SELECT id FROM players WHERE id LIKE ?';
             connection.query(query, [username], function (err, rows) {
-                if (err) {
-                    //console.log(err);
+                if (err || rows[0] == undefined) {
+                    exists(false);
                 } else {
-                    exists(rows[0].id);
+                    exists(true);
                 }
             });
 
